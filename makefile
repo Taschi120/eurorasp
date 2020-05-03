@@ -10,7 +10,7 @@ DEPS := $(OBJS:.o=.d)
 INC_DIRS := $(shell find $(SRC_DIRS) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
-CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -D__LINUX_ALSA__
+CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -D__LINUX_ALSA__ -std=c++2a
 
 LDLIBS = -lgpiod -lasound -lpthread
 
