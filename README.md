@@ -1,10 +1,12 @@
+# About
+
 This program is intended for those wishing to use a Raspberry Pi as a MIDI input for a eurorack synthesizer (or similar formats). My motivation for using a Raspberry, rather than something Atmel-based (Arduino or similar), is that a) i want support for USB devices and b) i want to have some features like a trigger, gate, note speed and some more nice things like that, which exceed the usual ATtiny85-based designs floating around the internet.
 
 My goal is for this repo to include the software, along with schematics for the required circuitry and config files for setting up Raspbian properly for embedded use.
 
 Note that this software is not currently finished or fully functional.
 
-h1. Building
+# Building
 
 Make sure to install the following tools and libraries on your Raspberry:
 
@@ -22,7 +24,7 @@ Obtain a copy of the source code (via git clone or download), navigate into the 
 No "make install" step is currently provided.
 
 
-h1. License
+# License
 
     Eurorasp, a MIDI-to-CV converter for the Raspberry Pi
     Copyright (C) 2020, S. Hillebrand
@@ -40,7 +42,7 @@ h1. License
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-h1. Third-Party Acknowledgements
+# Third-Party Acknowledgements
 
 This project uses libgpiod, which is licensed under the GNU LGPL 2.1.
 Copyright (C) 2017-2019 Bartosz Golaszewski <bartekgola@gmail.com>
