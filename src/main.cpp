@@ -4,6 +4,7 @@
 #include "gpiod.h"
 #include "RtMidi.h"
 #include <chrono>
+#include "reg.hpp"
 
 #define GPIO_DEVICE "gpiochip0"
 #define MY_DEVICE 1
@@ -34,6 +35,8 @@ bool trigger_active = false;
 typedef std::chrono::duration<long,std::nano> nanos;
 
 const nanos pulse_duration (100);
+
+ShiftRegister* voct_out = new ShiftRegister(0, 1, 2);
 
 void set_gate(bool state) {
 	int status = gpiod_line_set_value(gate_line, state ? 1:0);
