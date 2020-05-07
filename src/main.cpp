@@ -4,13 +4,21 @@
 #include "gpiod.h"
 #include "RtMidi.h"
 #include <chrono>
+#include <thread>
 #include "reg.hpp"
+#include "dac.hpp"
+#include "mcp4922.hpp"
 
 #define GPIO_DEVICE "gpiochip0"
 #define MY_DEVICE 1
 #define PINOUT_GATE 21
 #define PINOUT_RETRIGGER 20
 #define PINOUT_TO_BE_DETERMINED 16
+
+#define PINOUT_DAC1_DATA 16
+#define PINOUT_DAC1_CLOCK 20
+#define PINOUT_DAC1_LATCH 12
+#define PINOUT_DAC1_CS 21
 
 #define GATE_ON true
 #define GATE_OFF false
@@ -78,6 +86,25 @@ void callback(double timestamp, std::vector<unsigned char> *message, void *userD
 
 
 	std::cout << std::endl;
+}
+
+int main_test_dac() {
+	auto dac = new Mcp4922(16, 20 , 12, 21);
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+	// dac->send(2000, Mcp4922::CHANNEL_A);
+	int val = 0;
+	int dir = +10;
+	while(true) {
+		val += dir;
+		dac->send(val, Mcp4922::CHANNEL_A);
+		if (val == 4000) {
+			dir = -10;
+		} else if (val == 0) {
+			dir = +10;
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(5));
+	}
+
 }
 
 int main() {

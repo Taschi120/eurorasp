@@ -3,10 +3,10 @@
 #include <chrono>
 #include <thread>
 
+using namespace std::chrono;
+using namespace std;
+
 ShiftRegister::ShiftRegister(int data_pin, int latch_pin, int clock_pin) {
-	this->data_pin = data_pin;
-	this->latch_pin = latch_pin;
-	this->clock_pin = clock_pin;
 
 	chip = gpiod_chip_open_by_number(0);
 	data_ln = gpiod_chip_get_line(chip, data_pin);
@@ -26,10 +26,12 @@ ShiftRegister::~ShiftRegister() {
 void ShiftRegister::push(unsigned char in) {
 	latch_on();
 	for(int i = 0; i < 8; ++i) {
-		bool lsb = ((in & 1) != 0);
-		send_bit(lsb);
+		bool msb = ((in & 0x80) != 0);
+		send_bit(msb);
+		this_thread::sleep_for(nanoseconds(15));
 		clock();
-		in = in >> 1;
+		this_thread::sleep_for(nanoseconds(10));
+		in = in << 1;
 	}
 	latch_off();
 }
@@ -37,30 +39,34 @@ void ShiftRegister::push(unsigned char in) {
 void ShiftRegister::push(unsigned short in) {
 	latch_on();
 	for(int i = 0; i < 16; ++i) {
-		bool lsb = ((in & 1) != 0);
-		send_bit(lsb);
+		bool msb = ((in & 0x8000) != 0);
+		send_bit(msb);
+		this_thread::sleep_for(nanoseconds(15));
 		clock();
-		in = in >> 1;
+		this_thread::sleep_for(nanoseconds(10));
+		in = in << 1;
 	}
 	latch_off();
 }
 
 void ShiftRegister::latch_on() {
-	gpiod_line_set_value(latch_ln, 0);
+	gpiod_line_set_value(latch_ln, 1);
+	std::this_thread::sleep_for(std::chrono::milliseconds(1));
 }
 
 void ShiftRegister::latch_off() {
-	gpiod_line_set_value(latch_ln, 1);
+	gpiod_line_set_value(latch_ln, 0);
+	std::this_thread::sleep_for(std::chrono::milliseconds(1));
 }
 
 void ShiftRegister::clock() {
 	gpiod_line_set_value(clock_ln, 1);
-	std::this_thread::sleep_for(std::chrono::nanoseconds(1));
+	std::this_thread::sleep_for(std::chrono::nanoseconds(5));
 	gpiod_line_set_value(clock_ln, 0);
 }
 
 
 void ShiftRegister::send_bit(bool bit) {
 	gpiod_line_set_value(data_ln, bit ? 1 : 0);
-	std::this_thread::sleep_for(std::chrono::nanoseconds(1));
+	std::this_thread::sleep_for(std::chrono::nanoseconds(5));
 }
