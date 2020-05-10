@@ -10,21 +10,10 @@
 #include "dac.hpp"
 #include "mcp4922.hpp"
 #include "voct.h"
+#include "pins.hpp"
 
 #define GPIO_DEVICE "gpiochip0"
 #define MY_DEVICE 0
-
-#define PINOUT_GATE 21
-#define PINOUT_RETRIGGER 20
-#define PINOUT_TO_BE_DETERMINED 16
-
-// These defines for the four DAC input lines
-// are defined in the order of the pin
-// numbers on the MCP4922 IC.
-#define PINOUT_DAC1_CS 1 // PIN 3 on IC
-#define PINOUT_DAC1_CLOCK 7 // PIN 4 on IC
-#define PINOUT_DAC1_DATA 8 // PIN 5 on IC
-#define PINOUT_DAC1_LATCH 25 // PIN 8 ON IC
 
 #define GATE_ON true
 #define GATE_OFF false
@@ -146,7 +135,7 @@ int main() {
 	RtMidiIn *midi = new RtMidiIn();
 
 	int num = midi->getPortCount();
-	std::cout << "MIDI devices available: " << num << std::endl;
+	
 
 	for (int cnt = 0; cnt < num; cnt++) {	
 		

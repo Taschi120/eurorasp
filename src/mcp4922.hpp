@@ -27,7 +27,7 @@ class Mcp4922 {
 
 		static const unsigned short MAX_PAYLOAD = 0x0fff;
 
-		static const unsigned short CONTROL_BITS = 0x1000;
+		static const unsigned short CONTROL_BITS = 0x3000;
 
 
 };
