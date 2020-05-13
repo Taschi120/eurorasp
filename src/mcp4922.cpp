@@ -41,10 +41,12 @@ void Mcp4922::send(unsigned short payload, unsigned short channel){
 	unsigned short bitmask = 0x8000;
 
 	set_clock(LOW);
+	busywait(microseconds(25000));
 	set_cs(LOW);
+	busywait(microseconds(25000));
 	set_latch(HIGH);
 
-	busywait(microseconds(25));	
+	busywait(microseconds(250000));	
 
 	for (int i = 0; i < 16; i++) {
 		int bit = (message & bitmask) ? HIGH : LOW;
@@ -52,14 +54,14 @@ void Mcp4922::send(unsigned short payload, unsigned short channel){
 		bitmask = bitmask >> 1;
 		
 		set_data(bit);
-		busywait(microseconds(25)); // setup time
+		busywait(microseconds(250000)); // setup time
 		set_clock(HIGH);
-		busywait(microseconds(25)); // hold time
+		busywait(microseconds(250000)); // hold time
 		set_clock(LOW);
 		// wait needed here? i don't think it is
 	}
 
-	busywait(microseconds(25));
+	busywait(microseconds(250000));
 	set_cs(HIGH);
 	set_latch(LOW);
 
