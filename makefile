@@ -14,6 +14,8 @@ CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -D__LINUX_ALSA__ -std=c++2a
 
 LDLIBS = -lgpiod -lasound -lpthread
 
+all: $(BUILD_DIR)/$(TARGET_EXEC)
+
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
 	$(CXX) $(OBJS) -o $@ $(LDFLAGS) $(LDLIBS)
 

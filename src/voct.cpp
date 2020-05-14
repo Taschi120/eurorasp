@@ -1,4 +1,4 @@
-#include "voct.h"
+#include "voct.hpp"
 
 #define VALUE_PER_NOTE 47.0690
 unsigned short midi_to_cv(int midi){
@@ -10,4 +10,3 @@ unsigned short midi_to_cv(int midi){
 	float note = midi - 21;
 	return (unsigned int) ((float) note * VALUE_PER_NOTE);
 }
-
