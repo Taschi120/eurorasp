@@ -3,16 +3,19 @@
 	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="midi2cv" />
+		<Option makefile="makefile" />
+		<Option makefile_is_custom="1" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="Release">
-				<Option output="bin/Release/midi2cv" prefix_auto="1" extension_auto="1" />
+			<Target title="all">
+				<Option output="build/midi2cv" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -22,6 +25,24 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="README.md" />
+		<Unit filename="RtMidi/RtMidi.cpp" />
+		<Unit filename="RtMidi/RtMidi.h" />
+		<Unit filename="makefile" />
+		<Unit filename="src/MidiInterface.cpp" />
+		<Unit filename="src/MidiInterface.hpp" />
+		<Unit filename="src/global.cpp" />
+		<Unit filename="src/global.hpp" />
+		<Unit filename="src/input.cpp" />
+		<Unit filename="src/input.hpp" />
+		<Unit filename="src/keypad.cpp" />
+		<Unit filename="src/keypad.hpp" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/mcp4922.cpp" />
+		<Unit filename="src/mcp4922.hpp" />
+		<Unit filename="src/pins.hpp" />
+		<Unit filename="src/voct.cpp" />
+		<Unit filename="src/voct.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

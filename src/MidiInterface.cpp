@@ -75,7 +75,7 @@ void MidiInterface::set_note(int note) {
 
 void MidiInterface::loop() {
     if (trigger_active) {
-		if (last_trigger + pulse_duration >= high_resolution_clock::now()) {
+		if (last_trigger + pulse_duration <= high_resolution_clock::now()) {
 			gpiod_line_set_value(trigger_line, 0);
 			trigger_active = false;
 		}
