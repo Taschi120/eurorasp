@@ -3,9 +3,9 @@
 
 // Defines pin associations for various functions
 
-#define PINOUT_GATE 25
-#define PINOUT_RETRIGGER 24
-#define PINOUT_TO_BE_DETERMINED 16
+#define PINOUT_GATE 2
+#define PINOUT_RETRIGGER 3
+
 
 // These defines for the four DAC input lines
 // are defined in the order of the pin
@@ -16,10 +16,17 @@
 #define PINOUT_DAC1_DATA 20 // PIN 5 on IC
 #define PINOUT_DAC1_LATCH 21 // PIN 8 ON IC
 
-#define PIN_KP_C0 2
-#define PIN_KP_C1 3
-#define PIN_KP_C2 4
-#define PIN_KP_C3 14
+#define PINOUT_MOSI 10
+#define PINOUT_SCK 11 // SCLK
+#define PINOUT_DISPLAY_CS 8 // CE0
+#define PINOUT_SCREEN_DC 24 // GPI0
+#define PINOUT_SCREEN_RESET 25 // GPIO
+
+
+#define PIN_KP_C0 4
+#define PIN_KP_C1 14
+#define PIN_KP_C2 15
+#define PIN_KP_C3 18
 
 #define PIN_KP_R0 17
 #define PIN_KP_R1 27

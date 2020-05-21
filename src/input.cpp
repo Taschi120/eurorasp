@@ -43,6 +43,9 @@ void Input::loop() {
 	char c = keypad->read();
 
 	if (c == 0x0) {
+        if (was_key_pressed) {
+            cout << "Keystroke: " << last_key_pressed << endl;
+        }
 		was_key_pressed = false;
 	} else if ((!was_key_pressed) || (c != last_key_pressed)) {
 		was_key_pressed = true;

@@ -29,8 +29,51 @@
 		<Unit filename="RtMidi/RtMidi.cpp" />
 		<Unit filename="RtMidi/RtMidi.h" />
 		<Unit filename="makefile" />
+		<Unit filename="src/DEV_Config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/DEV_Config.h" />
+		<Unit filename="src/Debug.h" />
+		<Unit filename="src/Display.cpp" />
+		<Unit filename="src/Display.hpp" />
 		<Unit filename="src/MidiInterface.cpp" />
 		<Unit filename="src/MidiInterface.hpp" />
+		<Unit filename="src/OLED_Driver.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/OLED_Driver.h" />
+		<Unit filename="src/OLED_GFX.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/OLED_GFX.h" />
+		<Unit filename="src/dev_hardware_SPI.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/dev_hardware_SPI.h" />
+		<Unit filename="src/dev_hardware_i2c.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/dev_hardware_i2c.h" />
+		<Unit filename="src/fonts/ASCII_Font.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/fonts/ASCII_Font.h" />
+		<Unit filename="src/fonts/font12.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/fonts/font16.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/fonts/font20.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/fonts/font24.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/fonts/font8.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/fonts/fonts.h" />
 		<Unit filename="src/global.cpp" />
 		<Unit filename="src/global.hpp" />
 		<Unit filename="src/input.cpp" />
@@ -41,6 +84,10 @@
 		<Unit filename="src/mcp4922.cpp" />
 		<Unit filename="src/mcp4922.hpp" />
 		<Unit filename="src/pins.hpp" />
+		<Unit filename="src/sysfs_gpio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/sysfs_gpio.h" />
 		<Unit filename="src/voct.cpp" />
 		<Unit filename="src/voct.hpp" />
 		<Extensions>

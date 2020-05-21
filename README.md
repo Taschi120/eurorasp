@@ -44,11 +44,19 @@ No "make install" step is currently provided.
 
 # Third-Party Acknowledgements
 
-This project uses libgpiod, which is licensed under the GNU LGPL 2.1.
+## This project uses libgpiod, which is licensed under the GNU LGPL 2.1.
+
 Copyright (C) 2017-2019 Bartosz Golaszewski <bartekgola@gmail.com>
+
 https://github.com/brgl/libgpiod
 
-This project uses RtMidi.
+## This project uses RtMidi.
+
 RtMidi: realtime MIDI i/o C++ classes
+
 Copyright (c) 2003-2019 Gary P. Scavone
+
 https://www.music.mcgill.ca/~gary/rtmidi/
+
+Some example code for the Waveshare 1.5inch RGB OLED module is also used.
+

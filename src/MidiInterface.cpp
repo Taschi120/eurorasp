@@ -38,7 +38,7 @@ MidiInterface::MidiInterface(gpiod_chip *chip)
 
 	}
 
-	midi->openPort(MY_DEVICE);
+	midi->openPort(DEFAULT_MIDI_DEVICE);
 	midi->setCallback(midi_event_callback);
 }
 
@@ -71,6 +71,12 @@ void MidiInterface::set_note(int note) {
 	dac->send(dac_value_voct, Mcp4922::CHANNEL_A);
 	set_gate(GATE_ON);
 	trigger();
+	global::display->setMidiNote(note);
+}
+
+void MidiInterface::set_velo(int velo) {
+	unsigned short dac_value_velo = velo_to_cv(velo);
+	dac->send(dac_value_velo, Mcp4922::CHANNEL_B);
 }
 
 void MidiInterface::loop() {
@@ -82,6 +88,11 @@ void MidiInterface::loop() {
 	}
 }
 
+void MidiInterface::note_off() {
+    set_gate(GATE_OFF);
+    global::display->setMidiNoteOff();
+}
+
 void midi_event_callback(double timestamp, std::vector<unsigned char> *message, void *userData) {
     using namespace global;
 
@@ -91,7 +102,7 @@ void midi_event_callback(double timestamp, std::vector<unsigned char> *message, 
 
 	if (opcode == NOTE_OFF_CMD) {
 		if (channel == 0) {
-			midi->set_gate(GATE_OFF);
+            midi->note_off();
 		}
 	}
 	else if (opcode == NOTE_ON_CMD) {
@@ -104,6 +115,22 @@ void midi_event_callback(double timestamp, std::vector<unsigned char> *message, 
 			unsigned char velo = message->at(2);
 
 			midi->set_note(note);
+			midi->set_velo(velo);
 		}
 	}
+}
+
+int MidiInterface::getDeviceCount()
+{
+    return midi->getPortCount();
+}
+
+int MidiInterface::getCurrentDeviceIndex()
+{
+    return device_index;
+}
+
+string MidiInterface::getCurrentDeviceName()
+{
+    return midi->getPortName();
 }

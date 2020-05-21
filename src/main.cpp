@@ -12,6 +12,7 @@
 #include "pins.hpp"
 #include "global.hpp"
 #include "MidiInterface.hpp"
+#include "Display.hpp"
 
 #define GPIO_DEVICE "gpiochip0"
 
@@ -20,6 +21,9 @@ int main() {
 
 	global::input = new Input(gpiod_chip);
     global::midi = new MidiInterface(gpiod_chip);
+    global::display = new Display();
+
+    global::display->drawDefaultImage();
 
 	std::cout << "Starting pulse control loop" << std::endl;
 	while (true) {
