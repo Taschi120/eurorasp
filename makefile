@@ -1,4 +1,4 @@
-TARGET_EXEC ?= midi2cv
+TARGET_EXEC ?= eurorasp
 
 BUILD_DIR ?= ./build
 SRC_DIRS ?= ./src
@@ -10,14 +10,17 @@ DEPS := $(OBJS:.o=.d)
 INC_DIRS := $(shell find $(SRC_DIRS) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
-CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -D__LINUX_ALSA__ -std=c++2a
-CFLAGS ?=$(INC_FLAGS) -MMD -MP -D__LINUX_ALSA__ -DUSE_BCM2835_LIB
+SHAREDFLAGS ?= -MMD -MP -D__LINUX_ALSA__ -rdynamic
+CPPFLAGS ?= $(INC_FLAGS) $(SHAREDFLAGS) -std=c++2a
+CFLAGS ?=$(INC_FLAGS) $(SHAREDFLAGS) -DUSE_BCM2835_LIB
 
-#CC = clang
-#CXX = clang
+BINDIR ?= /usr/bin
+SERVICEDIR ?= /etc/systemd/system
+
+.DEFAULT_GOAL := all
 
 LDFLAGS ?= -L/usr/lib:/usr/local/lib
-LDLIBS = -lgpiod -lasound -lpthread -lbcm2835
+LDLIBS = -lgpiod -lasound -lpthread -lbcm2835 -ldl
 
 cleanall: clean all
 all: $(BUILD_DIR)/$(TARGET_EXEC)
@@ -42,10 +45,18 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 
-.PHONY: clean
+.PHONY: clean install
 
 clean:
 	$(RM) -r $(BUILD_DIR)
+
+install: build
+	cp $(BUILD_DIR)/$(TARGET_EXEC) $(BINDIR)
+	cp util/eurorasp.service $(SERVICEDIR)
+	chmod 0700 $(BINDIR)/$(TARGET_EXEC) $(SERVICEDIR)/eurorasp.service
+	chown root $(BINDIR)/$(TARGET_EXEC) $(SERVICEDIR)/eurorasp.service
+	systemctl enable eurorasp.service
+	systemctl start eurorasp.service
 
 -include $(DEPS)
 

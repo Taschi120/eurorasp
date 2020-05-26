@@ -16,6 +16,7 @@ Make sure to install the following tools and libraries on your Raspberry:
 * alsa
 * asound (including dev packages)
 * pthread (including dev packages)
+* boost (including dev packages)
 
 Alsa, asound and pthread can be replaced with Jack but I have not personally tested that. Those dependencies are required by RtMidi and further info can be found on RtMidi's website at https://www.music.mcgill.ca/~gary/rtmidi/.
 
@@ -59,4 +60,5 @@ Copyright (c) 2003-2019 Gary P. Scavone
 https://www.music.mcgill.ca/~gary/rtmidi/
 
 Some example code for the Waveshare 1.5inch RGB OLED module is also used.
+
 

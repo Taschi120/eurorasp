@@ -3,6 +3,9 @@
 #include <cstdio>
 #include <chrono>
 #include <thread>
+#include <signal.h>
+#include <execinfo.h>
+#include <unistd.h>
 
 #include "gpiod.h"
 #include "RtMidi.h"
@@ -16,7 +19,26 @@
 
 #define GPIO_DEVICE "gpiochip0"
 
+#define SIGSEGV 11 // linux signal
+
+using namespace std;
+
+void on_signal(int signal) {
+    if (signal == SIGSEGV) {
+        void *array[10];
+        size_t size;
+        size = backtrace(array, 10);
+
+        cerr << "SEGFAULT encountered at traceback:" << endl;
+        backtrace_symbols_fd(array, size, STDERR_FILENO);
+        exit(1);
+    }
+}
+
 int main() {
+
+    signal(SIGSEGV, &on_signal);
+
 	auto* gpiod_chip = gpiod_chip_open_by_number(0);
 
 	global::input = new Input(gpiod_chip);
