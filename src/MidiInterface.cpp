@@ -6,6 +6,7 @@
 
 MidiInterface::MidiInterface(gpiod_chip *chip)
 {
+    activeNotes = new UniqueList();
     trigger_active = false;
     last_trigger = high_resolution_clock::now();
 
@@ -69,9 +70,6 @@ void MidiInterface::trigger() {
 void MidiInterface::set_note(int note) {
 	unsigned short dac_value_voct = midi_to_cv(note);
 	dac->send(dac_value_voct, Mcp4922::CHANNEL_A);
-	set_gate(GATE_ON);
-	trigger();
-	global::display->setMidiNote(note);
 }
 
 void MidiInterface::set_velo(int velo) {
@@ -88,36 +86,62 @@ void MidiInterface::loop() {
 	}
 }
 
-void MidiInterface::note_off() {
-    set_gate(GATE_OFF);
-    global::display->setMidiNoteOff();
+void MidiInterface::note_on(int note, int velo) {
+    set_note(note);
+	set_gate(GATE_ON);
+	set_velo(velo);
+	trigger();
+
+	global::display->setMidiNote(note);
+	activeNotes->add(note);
 }
 
-void midi_event_callback(double timestamp, std::vector<unsigned char> *message, void *userData) {
-    using namespace global;
+void MidiInterface::note_off(int note) {
+    activeNotes->rem(note);
 
-	auto status_byte = message->front();
+    if(activeNotes->isEmpty()) {
+        set_gate(GATE_OFF);
+        global::display->setMidiNoteOff();
+    } else {
+        int note = activeNotes->getLast();
+        set_note(note);
+        trigger();
+        // Velo is kept from previous note. There might be
+        // a more sensible behavior, but this seems fine to me?
+
+        global::display->setMidiNote(note);
+    }
+}
+
+void MidiInterface::parse(std::vector<unsigned char> * message) {
+    auto status_byte = message->front();
 	auto opcode = status_byte & HIGH_MASK;
 	auto channel = status_byte & LOW_MASK;
 
 	if (opcode == NOTE_OFF_CMD) {
-		if (channel == 0) {
-            midi->note_off();
-		}
+        if (message->size() != 3) {
+            std::cerr << "invalid message format" << std::endl;
+            return;
+        } else {
+            unsigned char note = message->at(1);
+
+            note_off(note);
+        }
 	}
 	else if (opcode == NOTE_ON_CMD) {
-
 		if (message->size() != 3) {
 			std::cerr << "invalid message format" << std::endl;
 			return;
 		} else {
-			unsigned char note = message->at(1);
-			unsigned char velo = message->at(2);
-
-			midi->set_note(note);
-			midi->set_velo(velo);
+            unsigned char note = message->at(1);
+            unsigned char velo = message->at(2);
+			note_on(note, velo);
 		}
 	}
+}
+
+void midi_event_callback(double timestamp, std::vector<unsigned char> *message, void *userData) {
+    global::midi->parse(message);
 }
 
 int MidiInterface::getDeviceCount()

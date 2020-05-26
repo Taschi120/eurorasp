@@ -75,12 +75,7 @@ void Input::process_command(string cmd) {
 			std::cerr << "Not a number: " << num << std::endl;
 		}
 	} else {
-		try {
-			int note = stoi(cmd);
-			midi->set_note(note);
-		} catch (const invalid_argument& e) {
-			cerr << "Invalid command: " << cmd << endl;
-        }
+        cerr << "Invalid command: " << cmd << endl;
 	}
 }
 

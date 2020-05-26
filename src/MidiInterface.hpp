@@ -5,6 +5,7 @@
 #include <chrono>
 #include "RtMidi/RtMidi.h"
 #include "mcp4922.hpp"
+#include "UniqueList.hpp"
 
 #define NOTE_OFF 0
 #define NOTE_OFF_CMD 0x80
@@ -30,11 +31,14 @@ class MidiInterface
     public:
         MidiInterface(gpiod_chip *chip);
         virtual ~MidiInterface();
+
+        void parse(std::vector<unsigned char> *message);
+
         void set_gate(bool);
         void trigger();
-        void set_note(int);
         void set_velo(int velo);
-        void note_off();
+        void note_on(int note, int velo);
+        void note_off(int);
         void loop();
 
         int getDeviceCount();
@@ -50,6 +54,10 @@ class MidiInterface
         high_resolution_clock::time_point last_trigger;
         RtMidiIn *midi;
         bool trigger_active;
+        UniqueList *activeNotes;
+
+        void set_note(int);
+
 };
 
 #endif // __INCLUDE_MIDIINTERFACE_H_
