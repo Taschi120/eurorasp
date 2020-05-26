@@ -19,25 +19,48 @@
 
 #define GPIO_DEVICE "gpiochip0"
 
-#define SIGSEGV 11 // linux signal
+#define SIGINT 2 // linux signal: interrupt from keyboard
+#define SIGQUIT 3 // linux signal: quit from keyboard
+#define SIGSEGV 11 // linux signal: segmentation fault
+#define SIGTERM 15 // linux signal: Termination request
 
 using namespace std;
+using namespace global;
 
-void on_signal(int signal) {
-    if (signal == SIGSEGV) {
-        void *array[10];
-        size_t size;
-        size = backtrace(array, 10);
+bool sigterm_received = false;
 
-        cerr << "SEGFAULT encountered at traceback:" << endl;
-        backtrace_symbols_fd(array, size, STDERR_FILENO);
-        exit(1);
+void segfault(int signal) {
+    void *array[10];
+    size_t size;
+    size = backtrace(array, 10);
+
+    cerr << "SEGFAULT encountered at traceback:" << endl;
+    backtrace_symbols_fd(array, size, STDERR_FILENO);
+
+    if(display != 0) {
+        display->shutdown();
     }
+    exit(1);
+}
+
+void shutdown(int signal) {
+    sigterm_received = true;
 }
 
 int main() {
 
-    signal(SIGSEGV, &on_signal);
+    if(signal(SIGSEGV, segfault) == SIG_ERR) {
+        cerr << "Can't register handler for SIGSEGV" << endl;
+    }
+    if(signal(SIGINT, shutdown) == SIG_ERR) {
+        cerr << "Can't register handler for SIGINT" << endl;
+    }
+    if(signal(SIGTERM, shutdown) == SIG_ERR) {
+        cerr << "Can't register handler for SIGTERM" << endl;
+    }
+    if(signal(SIGQUIT, shutdown) == SIG_ERR) {
+        cerr << "Can't register handler for SIGQUIT" << endl;
+    }
 
 	auto* gpiod_chip = gpiod_chip_open_by_number(0);
 
@@ -48,11 +71,13 @@ int main() {
     global::display->drawDefaultImage();
 
 	std::cout << "Starting pulse control loop" << std::endl;
-	while (true) {
+	while (!sigterm_received) {
 		global::input->loop();
 		global::midi->loop();
 	}
 
+	cout << "SIGTERM received, quitting";
+	display->shutdown();
 	return 0;
 }
 

@@ -22,6 +22,8 @@ class Display
         void setMidiNote(int note);
         void setMidiNoteOff();
 
+        void shutdown();
+
     protected:
 
     private:

@@ -133,3 +133,10 @@ void Display::drawNote() {
     }
     print_String(0, HEIGHT - LINE_HEIGHT + 2, str2c(text), FONT_8X16);
 }
+
+void Display::shutdown() {
+    Set_Color(BACKGROUND);
+    Fill_Rect(0, 0, WIDTH, HEIGHT);
+    Set_Color(TEXT_ERR);
+    print_String(0, 2, str2c("OFF"), FONT_8X16);
+}
