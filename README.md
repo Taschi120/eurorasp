@@ -11,18 +11,21 @@ Note that this software is not currently finished or fully functional.
 Make sure to install the following tools and libraries on your Raspberry:
 
 * gcc and g++
-* make
+* (GNU) make
 * libgpiod (including dev packages)
 * alsa
 * asound (including dev packages)
 * pthread (including dev packages)
 * boost (including dev packages)
+* bcm2835 (from https://www.airspayce.com/mikem/bcm2835, not available as prebuilt package, as far as I know. Can be skipped if you pass the parameter "DISABLE_DISPLAY=true"
+to make)
 
-Alsa, asound and pthread can be replaced with Jack but I have not personally tested that. Those dependencies are required by RtMidi and further info can be found on RtMidi's website at https://www.music.mcgill.ca/~gary/rtmidi/.
+Alsa, asound and pthread can be replaced with Jack but I have not personally tested that. Those dependencies are required by RtMidi and further info can be
+found on RtMidi's website at https://www.music.mcgill.ca/~gary/rtmidi/.
 
-Obtain a copy of the source code (via git clone or download), navigate into the project root folder and run "make".
-
-No "make install" step is currently provided.
+Obtain a copy of the source code (via git clone or download), navigate into the project root folder and run "make",
+followed by "sudo make install" if you want to install the software into /usr/local and install a systemd unit
+for automatic startup / restart
 
 
 # License
@@ -61,4 +64,8 @@ https://www.music.mcgill.ca/~gary/rtmidi/
 
 Some example code for the Waveshare 1.5inch RGB OLED module is also used.
 
+## This project uses libbcm2835.
 
+https://www.airspayce.com/mikem/bcm2835/
+
+libbcm2835 is licensed under the GNU GPL 3.
