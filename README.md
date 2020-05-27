@@ -25,8 +25,9 @@ found on RtMidi's website at https://www.music.mcgill.ca/~gary/rtmidi/.
 
 Obtain a copy of the source code (via git clone or download), navigate into the project root folder and run "make",
 followed by "sudo make install" if you want to install the software into /usr/local and install a systemd unit
-for automatic startup / restart
+for automatic startup / restart of the program.
 
+Please note that the software will require root privileges to run, unless built with the "DISABLE_DISPLAY=true" flag. This is due to low-level access to the system's SPI BUS.
 
 # License
 
