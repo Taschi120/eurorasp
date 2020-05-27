@@ -1,3 +1,5 @@
+#ifndef DISABLE_DISPLAY
+
 #include "OLED_GFX.h"
 #include <stdio.h>
 
@@ -33,7 +35,7 @@ void print_String(uint8_t x, uint8_t y, const uint8_t *text, FONT_SIZE size) {
 
 
 void Display_String_8x16(uint8_t x, uint8_t y, const uint8_t *text) {
-  
+
   uint16_t i=0,j,k,n;
   if(x>120)  {
     x=1;
@@ -58,21 +60,21 @@ void Display_String_8x16(uint8_t x, uint8_t y, const uint8_t *text) {
 
 void Display_String_5x8(uint8_t x, uint8_t y, const uint8_t *text)  {
   uint8_t i=0,j,k;
-  while(text[i]>0x00) {	
+  while(text[i]>0x00) {
     if((text[i]>=0x20)&&(text[i]<=0x7e))  {
       j=text[i]-0x20;
       for(k=0; k<5;k++)  {
         Set_Address(x+k, y);
         Write_text(ascii_table_5x8[j][k]);
       }
-      Set_Address(x+5, y);   
+      Set_Address(x+5, y);
       Write_text(0x00);
       i++;
       x+=6;
       if(x>=128)
         x=1;
     }
-    else  
+    else
       i++;
   }
 }
@@ -89,7 +91,7 @@ void Draw_Line(int16_t x0, int16_t y0, int16_t x1, int16_t y1) {
   if(x0 == x1)  {
     if(y0 > y1) swap(y0, y1);
     Draw_FastVLine(x0, y0, y1 - y0 + 1);
-  } 
+  }
   else if(y0 == y1) {
     if(x0 > x1)
       swap(x0, x1);
@@ -101,9 +103,9 @@ void Draw_Line(int16_t x0, int16_t y0, int16_t x1, int16_t y1) {
 
 
 void Write_Line(int16_t x0, int16_t y0, int16_t x1, int16_t y1)  {
-    
+
   int16_t steep = abs(y1 - y0) > abs(x1 - x0);
-    
+
   if (steep)  {
     swap(x0, y0);
     swap(x1, y1);
@@ -122,7 +124,7 @@ void Write_Line(int16_t x0, int16_t y0, int16_t x1, int16_t y1)  {
 
   if(y0 < y1) {
     ystep = 1;
-  } 
+  }
   else  {
     ystep = -1;
   }
@@ -133,7 +135,7 @@ void Write_Line(int16_t x0, int16_t y0, int16_t x1, int16_t y1)  {
     else
       Draw_Pixel(x0, y0);
     err -= dy;
-      
+
     if(err < 0) {
       y0 += ystep;
       err += dx;
@@ -176,8 +178,8 @@ void Fill_Rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h) {
   Write_Data(y);
   Write_Data(y+h-1);
   // fill!
-  Write_Command(SSD1351_CMD_WRITERAM);  
-  
+  Write_Command(SSD1351_CMD_WRITERAM);
+
   for (uint16_t i=0; i < w*h; i++) {
     Write_Data(color_fill_byte[0]);
     Write_Data(color_fill_byte[1]);
@@ -186,7 +188,7 @@ void Fill_Rect(uint16_t x, uint16_t y, uint16_t w, uint16_t h) {
 
 
 void Fill_Circle(int16_t x0, int16_t y0, int16_t r) {
-  
+
   Draw_FastVLine(x0, y0-r, 2*r+1);
   FillCircle_Helper(x0, y0, r, 3, 0);
 }
@@ -317,13 +319,13 @@ void Draw_Triangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, i
 }
 
 void Display_Interface(void) {
-  
+
   uint16_t i,color;
   RAM_Address();
   Write_Command(0x5C);
   for(i = 0 ; i < 128*63 ; i++)  {
     if((interface_1[i/8]>>(i%8))&0x01) {
-      
+
       if(i<128*12)
         color = GREEN+(i<<11);
       else if(i<128*40)
@@ -358,7 +360,7 @@ void Display_bmp(void) {
   uint16_t i = 0;
   RAM_Address();
   Write_Command(0x5C);
-  
+
   for( ; i < 128*128*2; i+=2)  {
     color_byte[0] = gImage_bmp2[i];
     color_byte[1] = gImage_bmp2[i+1];
@@ -368,4 +370,4 @@ void Display_bmp(void) {
 }
 
 
-
+#endif

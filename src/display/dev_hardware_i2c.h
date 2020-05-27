@@ -1,3 +1,7 @@
+// This file has been modified - check the Waveshare website for the official
+// version!
+#ifndef DISABLE_DISPLAY
+
 /*****************************************************************************
 * | File        :   dev_hardware_i2c.h
 * | Author      :   Waveshare team
@@ -48,7 +52,7 @@ typedef struct I2CStruct {
     //GPIO
     uint16_t SCL_PIN;
     uint16_t SDA_PIN;
-    
+
     int fd; //I2C device file descriptor
     uint16_t addr; //I2C device address
 } HARDWARE_I2C;
@@ -59,3 +63,4 @@ void DEV_HARDWARE_I2C_setSlaveAddress(uint8_t addr);
 uint8_t DEV_HARDWARE_I2C_write(const char * buf, uint32_t len);
 uint8_t DEV_HARDWARE_I2C_read(uint8_t reg, char* buf, uint32_t len);
 #endif
+#endif // DISABLE_DISPLAY

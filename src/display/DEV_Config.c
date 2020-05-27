@@ -1,3 +1,7 @@
+// This file has been modified - check the Waveshare website for the official
+// version!
+#ifndef DISABLE_DISPLAY
+
 /*****************************************************************************
 * | File      	:   DEV_Config.c
 * | Author      :   Waveshare team
@@ -19,13 +23,13 @@ void DEV_Digital_Write(UWORD Pin, UBYTE Value)
 {
 #ifdef USE_BCM2835_LIB
     bcm2835_gpio_write(Pin, Value);
-    
+
 #elif USE_WIRINGPI_LIB
     digitalWrite(Pin, Value);
-    
+
 #elif USE_DEV_LIB
     SYSFS_GPIO_Write(Pin, Value);
-    
+
 #endif
 }
 
@@ -34,10 +38,10 @@ UBYTE DEV_Digital_Read(UWORD Pin)
     UBYTE Read_value = 0;
 #ifdef USE_BCM2835_LIB
     Read_value = bcm2835_gpio_lev(Pin);
-    
+
 #elif USE_WIRINGPI_LIB
     Read_value = digitalRead(Pin);
-    
+
 #elif USE_DEV_LIB
     Read_value = SYSFS_GPIO_Read(Pin);
 #endif
@@ -46,7 +50,7 @@ UBYTE DEV_Digital_Read(UWORD Pin)
 
 void DEV_GPIO_Mode(UWORD Pin, UWORD Mode)
 {
-#ifdef USE_BCM2835_LIB  
+#ifdef USE_BCM2835_LIB
     if(Mode == 0 || Mode == BCM2835_GPIO_FSEL_INPT){
         bcm2835_gpio_fsel(Pin, BCM2835_GPIO_FSEL_INPT);
     }else {
@@ -56,7 +60,7 @@ void DEV_GPIO_Mode(UWORD Pin, UWORD Mode)
     if(Mode == 0 || Mode == INPUT){
         pinMode(Pin, INPUT);
         pullUpDnControl(Pin, PUD_UP);
-    }else{ 
+    }else{
         pinMode(Pin, OUTPUT);
         // printf (" %d OUT \r\n",Pin);
     }
@@ -69,7 +73,7 @@ void DEV_GPIO_Mode(UWORD Pin, UWORD Mode)
         SYSFS_GPIO_Direction(Pin, SYSFS_GPIO_OUT);
         // printf("OUT Pin = %d\r\n",Pin);
     }
-#endif   
+#endif
 }
 
 /**
@@ -104,27 +108,27 @@ UBYTE DEV_ModuleInit(void)
     } else {
         printf("bcm2835 init success !!! \r\n");
     }
-    
+
     // bcm2835_spi_begin();                                         //Start spi interface, set spi pin for the reuse function
 	// bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST);     //High first transmission
 	// bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);                  //spi mode 0
 	// bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_64);  //Frequency
 	// bcm2835_spi_chipSelect(BCM2835_SPI_CS0);                     //set CE0
 	// bcm2835_spi_setChipSelectPolarity(BCM2835_SPI_CS0, LOW);     //enable cs0
-    
-#elif USE_WIRINGPI_LIB  
-    //if(wiringPiSetup() < 0)//use wiringpi Pin number table  
+
+#elif USE_WIRINGPI_LIB
+    //if(wiringPiSetup() < 0)//use wiringpi Pin number table
     if(wiringPiSetupGpio() < 0) { //use BCM2835 Pin number table
         DEBUG("set wiringPi lib failed	!!! \r\n");
         return 1;
     } else {
         DEBUG("set wiringPi lib success  !!! \r\n");
-    }     
-    
+    }
+
     wiringPiSPISetup(0,90000000);
 	// wiringPiSPISetupMode(0, 90000000, 0);
 
-#elif USE_DEV_LIB 
+#elif USE_DEV_LIB
 
 #endif
     return 0;
@@ -134,10 +138,10 @@ void DEV_SPI_WriteByte(uint8_t Value)
 {
 #ifdef USE_BCM2835_LIB
     bcm2835_spi_transfer(Value);
-    
+
 #elif USE_WIRINGPI_LIB
     wiringPiSPIDataRW(0,&Value,1);
-    
+
 #elif USE_DEV_LIB
     DEV_HARDWARE_SPI_TransferByte(Value);
 
@@ -149,13 +153,13 @@ void DEV_SPI_Write_nByte(uint8_t *pData, uint32_t Len)
 #ifdef USE_BCM2835_LIB
     uint8_t rData[Len];
     bcm2835_spi_transfernb(pData,rData,Len);
-    
+
 #elif USE_WIRINGPI_LIB
     wiringPiSPIDataRW(0, pData, Len);
-    
+
 #elif USE_DEV_LIB
     DEV_HARDWARE_SPI_Transfer(pData, Len);
-    
+
 #endif
 }
 
@@ -180,3 +184,4 @@ void DEV_ModuleExit(void)
 #endif
 }
 
+#endif // DISABLE_DISPLAY

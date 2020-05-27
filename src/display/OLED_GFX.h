@@ -1,3 +1,7 @@
+// This file has been modified - check the Waveshare website for the official
+// version!
+#ifndef DISABLE_DISPLAY
+
 #ifndef __OLED_GFX_H
 #define __OLED_GFX_H
 
@@ -45,3 +49,4 @@ void Display_Interface(void);
 #endif
 
 #endif
+#endif // DISABLE_DISPLAY

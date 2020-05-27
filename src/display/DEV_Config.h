@@ -1,3 +1,7 @@
+// This file has been modified - check the Waveshare website for the official
+// version!
+#ifndef DISABLE_DISPLAY
+
 #ifndef _DEV_CONFIG_H_
 #define _DEV_CONFIG_H_
 /***********************************************************************************************************************
@@ -57,3 +61,4 @@ void DEV_SPI_Write_nByte(uint8_t *pData, uint32_t Len);
 }
 #endif
 #endif
+#endif // DISABLE_DISPLAY

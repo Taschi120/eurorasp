@@ -16,6 +16,7 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add directory="include" />
+					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -34,6 +35,8 @@
 		<Unit filename="src/MidiInterface.hpp" />
 		<Unit filename="src/RtMidi/RtMidi.cpp" />
 		<Unit filename="src/RtMidi/RtMidi.h" />
+		<Unit filename="src/UniqueList.cpp" />
+		<Unit filename="src/UniqueList.hpp" />
 		<Unit filename="src/display/DEV_Config.c">
 			<Option compilerVar="CC" />
 		</Unit>

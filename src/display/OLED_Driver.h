@@ -1,3 +1,7 @@
+// This file has been modified - check the Waveshare website for the official
+// version!
+#ifndef DISABLE_DISPLAY
+
 #ifndef __OLED_DRIVER_H__
 #define __OLED_DRIVER_H__
 
@@ -84,4 +88,4 @@ void RAM_Address(void);
 }
 #endif
 #endif
-
+#endif // DISABLE_DISPLAY

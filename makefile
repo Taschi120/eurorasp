@@ -2,7 +2,6 @@ TARGET_EXEC ?= eurorasp
 
 BUILD_DIR ?= ./build
 SRC_DIRS ?= ./src
-
 SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
@@ -20,7 +19,14 @@ SERVICEDIR ?= /etc/systemd/system
 .DEFAULT_GOAL := all
 
 LDFLAGS ?= -L/usr/lib:/usr/local/lib
-LDLIBS = -lgpiod -lasound -lpthread -lbcm2835 -ldl
+LDLIBS := -lgpiod -lasound -lpthread
+
+ifeq ($(DISABLE_DISPLAY),true)
+SHAREDFLAGS += -DDISABLE_DISPLAY
+else
+LDLIBS += -lbcm2835
+endif
+
 
 cleanall: clean all
 all: $(BUILD_DIR)/$(TARGET_EXEC)

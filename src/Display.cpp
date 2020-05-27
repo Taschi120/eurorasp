@@ -1,8 +1,9 @@
+#ifndef DISABLE_DISPLAY
 #include "Display.hpp"
-
 #include "OLED_Driver.h"
 #include "OLED_GFX.h"
 #include "DEV_Config.h"
+#endif
 
 #include "global.hpp"
 
@@ -31,8 +32,10 @@ const string Display::notes[] =
 
 Display::Display()
 {
+#ifndef DISABLE_DISPLAY
     DEV_ModuleInit();
     Device_Init();
+#endif
 }
 
 Display::~Display()
@@ -41,6 +44,7 @@ Display::~Display()
 }
 
 uint8_t* str2c(string in) {
+#ifndef DISABLE_DISPLAY
     uint8_t* out = (uint8_t*) malloc(in.length() + 1);
     for (int i = 0; i < in.length(); i++) {
         if (in[i] == '[') {
@@ -53,10 +57,14 @@ uint8_t* str2c(string in) {
     }
     out[in.length()] = 0;
     return out;
+#else
+    return 0;
+#endif
 }
 
 void Display::drawDefaultImage()
 {
+#ifndef DISABLE_DISPLAY
     cout << "drawing default image" << endl;
     Set_Color(BACKGROUND);
     Fill_Rect(0, 0, HEIGHT - 1, WIDTH - 1);
@@ -64,9 +72,11 @@ void Display::drawDefaultImage()
     drawMidiStatus();
     drawStatus();
     drawNote();
+#endif
 }
 
 void Display::drawMidiStatus() {
+#ifndef DISABLE_DISPLAY
     Set_Color(TEXT);
 
     string line1 = "[A] MIDI Device";
@@ -84,15 +94,18 @@ void Display::drawMidiStatus() {
         line1 = line1.substr(0, MAX_CHARS - 1);
     }
     print_String(0, 2 + 2*LINE_HEIGHT, str2c(line1), FONT_8X16);
-
+#endif
 }
 
 void Display::setStatus(int status) {
+#ifndef DISABLE_DISPLAY
     this->status = status;
     drawStatus();
+#endif
 }
 
 void Display::drawStatus() {
+#ifndef DISABLE_DISPLAY
     Set_Color(BACKGROUND);
     Fill_Rect(WIDTH - 40, HEIGHT - LINE_HEIGHT, 40, LINE_HEIGHT);
 
@@ -103,22 +116,28 @@ void Display::drawStatus() {
         Set_Color(TEXT_OK);
         print_String(WIDTH - 40, HEIGHT - LINE_HEIGHT + 2, str2c("ERROR"), FONT_8X16);
     }
+#endif
 }
 
 void Display::setMidiNote(int note)
 {
+#ifndef DISABLE_DISPLAY
     this->midi_note = note;
     drawNote();
+#endif
 }
 
 void Display::setMidiNoteOff()
 {
+#ifndef DISABLE_DISPLAY
     this->midi_note = NO_MIDI_NOTE;
     drawNote();
+#endif
 }
 
 
 void Display::drawNote() {
+#ifndef DISABLE_DISPLAY
     Set_Color(BACKGROUND);
     Fill_Rect(0, HEIGHT - LINE_HEIGHT, 16, LINE_HEIGHT);
     Set_Color(TEXT);
@@ -132,11 +151,14 @@ void Display::drawNote() {
         text = "--";
     }
     print_String(0, HEIGHT - LINE_HEIGHT + 2, str2c(text), FONT_8X16);
+#endif
 }
 
 void Display::shutdown() {
+#ifndef DISABLE_DISPLAY
     Set_Color(BACKGROUND);
     Fill_Rect(0, 0, WIDTH, HEIGHT);
     Set_Color(TEXT_ERR);
     print_String(0, 2, str2c("OFF"), FONT_8X16);
+#endif
 }
