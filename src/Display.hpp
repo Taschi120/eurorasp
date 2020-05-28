@@ -15,6 +15,8 @@ class Display
         virtual ~Display();
 
         void drawDefaultImage();
+        void drawErrorScreen();
+        void drawMidiDeviceSelectionScreen();
 
         void setStatus(int status);
         void setMidiNote(int note);

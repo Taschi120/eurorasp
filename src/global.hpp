@@ -4,12 +4,14 @@
 #include "input.hpp"
 #include "MidiInterface.hpp"
 #include "Display.hpp"
+#include "StateMachine.hpp"
 // yes, i know this is hacky. Sue me.
 
 namespace global {
     extern Input *input;
     extern MidiInterface *midi;
     extern Display *display;
+    extern StateMachine *stateMachine;
 }
 
 #endif // __INCLUDE_GLOBAL_HPP_

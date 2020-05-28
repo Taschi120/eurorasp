@@ -75,6 +75,34 @@ void Display::drawDefaultImage()
 #endif
 }
 
+void Display::drawErrorScreen()
+{
+#ifndef DISABLE_DISPLAY
+    Set_Color(BACKGROUND);
+    Fill_Rect(0, 0, HEIGHT - 1, WIDTH - 1);
+
+    Set_Color(TEXT_ERR);
+    print_String(0, 2, str2c("Invalid Input!"), FONT_8X16);
+    Set_Color(TEXT);
+    print_String(0, LINE_HEIGHT + 2,  str2c("Press ENTER to"), FONT_5X8);
+    print_String(0, LINE_HEIGHT + 12, str2c("   continue"), FONT_5X8);
+
+#endif // DISABLE_DISPLAY
+}
+
+void Display::drawMidiDeviceSelectionScreen()
+{
+#ifndef DISABLE_DISPLAY
+    Set_Color(BACKGROUND);
+    Fill_Rect(0, 0, HEIGHT - 1, WIDTH - 1);
+
+    Set_Color(TEXT);
+    print_String(0, 2, str2c("Enter MIDI dev #"), FONT_8X16);
+    print_String(0, HEIGHT - LINE_HEIGHT + 2, str2c(global::input->getBuffer() + "_"), FONT_8X16);
+#endif // DISABLE_DISPLAY
+}
+
+
 void Display::drawMidiStatus() {
 #ifndef DISABLE_DISPLAY
     Set_Color(TEXT);

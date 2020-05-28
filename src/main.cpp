@@ -67,12 +67,12 @@ int main() {
 	global::input = new Input();
     global::midi = new MidiInterface(gpiod_chip);
     global::display = new Display();
+    global::stateMachine = new StateMachine();
 
     global::display->drawDefaultImage();
 
 	std::cout << "Starting pulse control loop" << std::endl;
 	while (!sigterm_received) {
-		global::input->loop();
 		global::midi->loop();
 	}
 

@@ -4,4 +4,5 @@ namespace global {
     MidiInterface *midi;
     Input *input;
     Display *display;
+    StateMachine *stateMachine;
 }
