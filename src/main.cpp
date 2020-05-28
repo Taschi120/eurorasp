@@ -64,7 +64,7 @@ int main() {
 
 	auto* gpiod_chip = gpiod_chip_open_by_number(0);
 
-	global::input = new Input(gpiod_chip);
+	global::input = new Input();
     global::midi = new MidiInterface(gpiod_chip);
     global::display = new Display();
 

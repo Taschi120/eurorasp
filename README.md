@@ -12,6 +12,7 @@ Make sure to install the following tools and libraries on your Raspberry:
 
 * gcc and g++
 * (GNU) make
+* screen
 * libgpiod (including dev packages)
 * alsa
 * asound (including dev packages)

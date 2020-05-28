@@ -3,33 +3,34 @@
 
 #include <string>
 #include <thread>
-#include "keypad.hpp"
 #include "pins.hpp"
+
+#define HID_DEVICE_FILE "/dev/hidraw0"
 
 using namespace std;
 
 class Input {
 	public:
-		Input(gpiod_chip *chip);
+		Input();
 		~Input();
 
 		// Poll for new input - is called from main loop
 		void loop();
 
 	private:
-		static constexpr int col_pins[4] = {
-			PIN_KP_C0, PIN_KP_C1, PIN_KP_C2, PIN_KP_C3};
-		static constexpr int row_pins[4] = {
-			PIN_KP_R0, PIN_KP_R1, PIN_KP_R2, PIN_KP_R3};
 
-		Keypad *keypad;
 		string current = "";
-		thread *t;
+		thread *io_reader;
+		thread *keyboard_reader;
 		bool was_key_pressed = false;
 		char last_key_pressed = 0x0;
 
 		void process_command(string cmd);
+		void handle_keypress(char key);
+		char convertScancodeToChar(unsigned int scancode);
+
 		void cin_listen();
+		void keyboard_listen();
 
 };
 

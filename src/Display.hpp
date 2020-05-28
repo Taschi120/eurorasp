@@ -8,8 +8,6 @@
 
 #define NO_MIDI_NOTE -1
 
-using namespace std;
-
 class Display
 {
     public:
@@ -34,7 +32,7 @@ class Display
         int status = STATUS_OK;
         int midi_note = NO_MIDI_NOTE;
 
-        static const string notes[];
+        static const std::string notes[];
 
 };
 
