@@ -4,6 +4,7 @@
 
 #include "input.hpp"
 #include "global.hpp"
+#include "RtMidi/RtMidi.h"
 
 State startEditMidiDevice(std::any data) {
     global::input->clearBuffer();
@@ -18,6 +19,9 @@ State endEditMidiDevice(std::any data) {
     } catch (const std::bad_any_cast& e) {
         return State::error_screen;
     } catch (const std::invalid_argument& e) {
+        return State::error_screen;
+    } catch (const RtMidiError& e) {
+        global::midi->switch_device(0);
         return State::error_screen;
     }
     return State::main_screen;
