@@ -5,6 +5,7 @@
 #include "MidiInterface.hpp"
 #include "Display.hpp"
 #include "StateMachine.hpp"
+#include "Config.hpp"
 // yes, i know this is hacky. Sue me.
 
 namespace global {
@@ -12,6 +13,7 @@ namespace global {
     extern MidiInterface *midi;
     extern Display *display;
     extern StateMachine *stateMachine;
+    extern Config *config;
 }
 
 #endif // __INCLUDE_GLOBAL_HPP_

@@ -5,4 +5,5 @@ namespace global {
     Input *input;
     Display *display;
     StateMachine *stateMachine;
+    Config *config;
 }

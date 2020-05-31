@@ -3,6 +3,7 @@
 
 #include <gpiod.h>
 #include <chrono>
+#include <vector>
 #include "RtMidi/RtMidi.h"
 #include "mcp4922.hpp"
 #include "UniqueList.hpp"
@@ -13,7 +14,7 @@
 #define NOTE_ON 1
 #define NOTE_ON_CMD 0x90
 
-#define DEFAULT_MIDI_DEVICE 1
+#define DEFAULT_MIDI_DEVICE 0
 
 #define GATE_ON true
 #define GATE_OFF false
@@ -41,9 +42,12 @@ class MidiInterface
         void note_off(int);
         void loop();
 
+        void switch_device(int new_device);
+
         int getDeviceCount();
         int getCurrentDeviceIndex();
         string getCurrentDeviceName();
+        vector<string> getDeviceNames();
 
     private:
         static constexpr duration pulse_duration = milliseconds(5);
@@ -57,6 +61,9 @@ class MidiInterface
         UniqueList *activeNotes;
 
         void set_note(int);
+
+        /** Loads the midi port last used (if configured & available), the default port otherwise */
+        void initializeMidiPort();
 
 };
 

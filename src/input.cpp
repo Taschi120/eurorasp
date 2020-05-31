@@ -80,6 +80,12 @@ string Input::getBuffer()
     return std::string(buffer);
 }
 
+void Input::clearBuffer()
+{
+    buffer = "";
+}
+
+
 
 void Input::keyboard_listen() {
     const char *eventDevice = "/dev/input/event0";

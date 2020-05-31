@@ -19,7 +19,7 @@ SERVICEDIR ?= /etc/systemd/system
 .DEFAULT_GOAL := all
 
 LDFLAGS ?= -L/usr/lib:/usr/local/lib
-LDLIBS := -lgpiod -lasound -lpthread -levdev
+LDLIBS := -lgpiod -lasound -lpthread -levdev -lstdc++fs
 
 ifeq ($(DISABLE_DISPLAY),true)
 SHAREDFLAGS += -DDISABLE_DISPLAY

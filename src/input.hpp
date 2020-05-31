@@ -11,6 +11,7 @@ class Input {
 		~Input();
 
 		std::string getBuffer();
+		void clearBuffer();
 
 	private:
 

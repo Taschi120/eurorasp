@@ -17,6 +17,8 @@
 #include "MidiInterface.hpp"
 #include "Display.hpp"
 
+#define CONFIG_FILE std::string(std::getenv("HOME")) + std::string("/.eurorasp/settings")
+
 #define GPIO_DEVICE "gpiochip0"
 
 #define SIGINT 2 // linux signal: interrupt from keyboard
@@ -64,6 +66,7 @@ int main() {
 
 	auto* gpiod_chip = gpiod_chip_open_by_number(0);
 
+	global::config = new Config(CONFIG_FILE);
 	global::input = new Input();
     global::midi = new MidiInterface(gpiod_chip);
     global::display = new Display();
@@ -78,6 +81,7 @@ int main() {
 
 	cout << "SIGTERM received, quitting";
 	display->shutdown();
+	global::config->save();
 	return 0;
 }
 

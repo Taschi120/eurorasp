@@ -3,6 +3,12 @@
 #include "pins.hpp"
 #include "voct.hpp"
 #include "global.hpp"
+#include "global.hpp"
+#include "Config.hpp"
+
+#include <string>
+
+using namespace std;
 
 MidiInterface::MidiInterface(gpiod_chip *chip)
 {
@@ -29,19 +35,39 @@ MidiInterface::MidiInterface(gpiod_chip *chip)
 
     midi = new RtMidiIn();
 
-	int num = midi->getPortCount();
+    initializeMidiPort();
+	midi->setCallback(midi_event_callback);
+}
 
+void MidiInterface::initializeMidiPort()
+{
+    int num = midi->getPortCount();
+
+    string lastUsedDevice = global::config->getString(CFG_KEY_SAVED_MIDI_INTERFACE);
+    cout << "Last used MIDI device: \"" << lastUsedDevice << "\"" << endl;
+
+
+    int deviceToUse = DEFAULT_MIDI_DEVICE;
 
 	for (int cnt = 0; cnt < num; cnt++) {
 
-		std::cout << "Device #" << cnt << ": " <<
-			midi->getPortName(cnt) << std::endl;
+        string name = midi->getPortName(cnt);
 
+		std::cout << "Device #" << cnt << ": \"" <<
+			name << "\"" << std::endl;
+
+        if ((!lastUsedDevice.empty()) && lastUsedDevice.compare(name) == 0) {
+            deviceToUse = cnt;
+            cout << "Found the device at #" << deviceToUse << endl;
+        }
 	}
 
-	midi->openPort(DEFAULT_MIDI_DEVICE);
-	midi->setCallback(midi_event_callback);
+	cout << "Opening MIDI Device #" << deviceToUse << endl;
+	midi->openPort(deviceToUse);
+	device_index = deviceToUse;
+    global::config->put(CFG_KEY_SAVED_MIDI_INTERFACE, midi->getPortName(deviceToUse));
 }
+
 
 MidiInterface::~MidiInterface()
 {
@@ -156,5 +182,24 @@ int MidiInterface::getCurrentDeviceIndex()
 
 string MidiInterface::getCurrentDeviceName()
 {
-    return midi->getPortName();
+    return midi->getPortName(device_index);
 }
+
+vector<string> MidiInterface::getDeviceNames()
+{
+    vector<string> result;
+    for (int i = 0; i < midi->getPortCount(); ++i) {
+        result.push_back(midi->getPortName(i));
+    }
+    return result;
+}
+
+void MidiInterface::switch_device(int new_device)
+{
+    midi->closePort();
+    midi->openPort(new_device);
+    device_index = new_device;
+
+    global::config->put(CFG_KEY_SAVED_MIDI_INTERFACE, getCurrentDeviceName());
+}
+

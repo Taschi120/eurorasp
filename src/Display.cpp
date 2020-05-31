@@ -99,6 +99,21 @@ void Display::drawMidiDeviceSelectionScreen()
     Set_Color(TEXT);
     print_String(0, 2, str2c("Enter MIDI dev #"), FONT_8X16);
     print_String(0, HEIGHT - LINE_HEIGHT + 2, str2c(global::input->getBuffer() + "_"), FONT_8X16);
+
+    vector<string> devices = global::midi->getDeviceNames();
+    for(int i = 0; i < devices.size(); ++i) {
+        if (i >= 4) break; // not enough space on screen!
+        string text = "[";
+        text += to_string(i);
+        text += "] ";
+        // 12 characters left
+        if (devices[i].length() > 12) {
+            text += devices[i].substr(0, 12);
+        } else {
+            text += devices[i];
+        }
+        print_String(0, LINE_HEIGHT * (i + 1) + 2, str2c(text), FONT_8X16);
+    }
 #endif // DISABLE_DISPLAY
 }
 
@@ -107,7 +122,7 @@ void Display::drawMidiStatus() {
 #ifndef DISABLE_DISPLAY
     Set_Color(TEXT);
 
-    string line1 = "[A] MIDI Device";
+    string line1 = "[1] MIDI Device";
 
     print_String(0, 2, str2c(line1), FONT_8X16);
 
@@ -115,13 +130,18 @@ void Display::drawMidiStatus() {
     line1.append(to_string(global::midi->getCurrentDeviceIndex() + 1));
     line1.append("/");
     line1.append(to_string(global::midi->getDeviceCount()));
-    print_String(16, 2 + LINE_HEIGHT, str2c(line1), FONT_8X16);
+    line1.append(" ");
+    int remainingChars = 32 - line1.length();
 
-    line1 = global::midi->getCurrentDeviceName();
-    if (line1.length() > MAX_CHARS) {
-        line1 = line1.substr(0, MAX_CHARS - 1);
+    string deviceName = global::midi->getCurrentDeviceName();
+    if (deviceName.length() > remainingChars) {
+        line1.append(deviceName.substr(0, remainingChars - 1));
+    } else {
+        line1.append(deviceName);
     }
-    print_String(0, 2 + 2*LINE_HEIGHT, str2c(line1), FONT_8X16);
+
+    print_String(0, 2 + LINE_HEIGHT, str2c(line1), FONT_5X8);
+
 #endif
 }
 
